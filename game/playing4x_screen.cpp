@@ -4,19 +4,53 @@
 #include <stdlib.h>     /* srand, rand */
 
 void Playing4xScreen::generate_random_direction() {
-	old_direction = ball_direction;
-
-	while (old_direction != ball_direction) {
-		random_direction = rand() % 2;
-		khroma.log(random_direction);
-		if (random_direction == 0) {
-			ball_direction = -1;
-		} else {
-			ball_direction = 1;
+	old_direction = ball_direction; 
+	int direction = ball_direction;
+	int old_axis = game.data.myID;
+	int axis = game.data.myID;
+	while (old_direction != direction && old_axis == axis) {
+		direction = rand() % 2;
+		axis = rand() % 2;
+		if (direction == 0) {
+			direction = -1;
 		}
-		ball_position = 0;
-		half_passed = true;
+		int reset_random = 0;
+		if(axis == game.data.myID){
+			if (direction == 1){
+				if(game.data.p1score == 0){
+					reset_random = 1;
+				}	
+			}
+			else{
+				if(game.data.p2score == 0){
+					reset_random = 1;
+				}
+			}
+		}
+		else{
+			if(direction == 1){
+				if(game.data.p3score == 0){
+					reset_random = 1;
+				}
+			}
+			else{
+				if(game.data.p4score == 0){
+					reset_random = 1;
+				}
+			}
+		}
+		if(reset_random == 1){
+			direction = old_direction;
+			axis = old_axis;
+		}
 	}
+	ball_position = 0;
+	half_passed = true;
+	if(axis != game.data.myID){
+		//send to other to launch game
+		//launch game in play off mode
+	}
+
 }
 
 void Playing4xScreen::init() {
