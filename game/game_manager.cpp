@@ -55,6 +55,8 @@ void GameManager::communicate(char type, char msg[4]) {
 void GameManager::restart_game() {
 	data.p1score = 0;
 	data.p2score = 0;
+	data.p3score = 0;
+	data.p4score = 0;
 	data.old_p1score = 0;
 	data.old_p2score = 0;
 	play();
