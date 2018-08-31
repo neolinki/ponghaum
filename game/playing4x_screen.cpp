@@ -3,7 +3,7 @@
 #include "game_manager.h"
 #include <stdlib.h>     /* srand, rand */
 
-void Playing4xScreen::generate_random_direction() {
+void Playing4xScreen::generate_random_direction(bool initial_random) {
 	old_direction = ball_direction; 
 	int direction = ball_direction;
 	int old_axis = game.data.myID;
@@ -44,13 +44,38 @@ void Playing4xScreen::generate_random_direction() {
 			axis = old_axis;
 		}
 	}
-	ball_position = 0;
+	if(initial_random){
+		if(direction == 1){
+			ball_position = -khroma.get_halfsize();
+		}
+		else{
+			ball_position = khroma.get_halfsize();
+		}
+	}
+	else{
+		ball_position = 0;
+	}
 	half_passed = true;
 	if(axis != game.data.myID){
 		//send to other to launch game
-		//launch game in play off mode
+		play_activation(false);
 	}
 
+}
+
+void Playing4xScreen::play_activation(bool activated, int direction){
+	if(!activated){
+		ball.set_queue(false);
+		ball.set_color(0x00, 0x00, 0x00);
+		game.data.activated = false;
+	}
+	else{
+		ball.set_queue(true);
+		ball.set_color(0xff,0xff,0xff);
+		game.data.activated = true;
+		ball_position = 0;
+		ball_direction = direction;
+	}
 }
 
 void Playing4xScreen::init() {
@@ -61,14 +86,8 @@ void Playing4xScreen::init() {
 	pad1.reverse(true);
 	pad2.init();
 
-	ball_local_speed = 0;
-	if (game.data.last_winner == PLAYER2) {
-		ball_position = khroma.get_halfsize();
-		ball_direction = -1;
-	} else {
-		ball_position = -khroma.get_halfsize();
-		ball_direction = 1;
-	}
+	ball_local_speed = 0;	
+	generate_random_direction(true);
 	inhibed_controls = true;
 
 	ball_speed.init();
@@ -76,26 +95,25 @@ void Playing4xScreen::init() {
 	ball_speed.start();
 
 	quit = 0;
+	if(!game.data.activated){
+		play_activation(false);
+	}
 
 	khroma.log("C'est (re)parti !\n");
 }
 
 void Playing4xScreen::onReceived(GameCommMsg type, char msg[4]) {
 	if (type == GameCommMsg_INIT4) {
-		if (msg[0] == 1) {
-				ball.set_queue(true);
-		} else {
-				ball.set_queue(false);
-		}
+		char *datas = analyse_data(msg);
 	}
 }
 
-/* Game mode: 0 -> 6
+/* Game mode: 0 -> 7
  * Ball direction: 0 -> 1
  * score_player_1: 0 -> 3
  * score_player_2: 0 -> 3
- * sender_id: 0 -> 254
- * receiver_id: 0 -> 254
+ * sender_id: 0 -> 255
+ * receiver_id: 0 -> 255
  * msg[4]
  */
 void Playing4xScreen::make_msg(
@@ -171,20 +189,26 @@ void Playing4xScreen::animate() {
 	if (!quit) {
 		// Check for win
 		if (ball_position < -khroma.get_halfsize()) {
-			game.data.last_winner = PLAYER2;
 			game.data.old_p1score = game.data.p1score;
 			game.data.old_p2score = game.data.p2score;
-			game.data.p2score += 1;
-			//quit = true;
-			ball_direction = 1;
+			game.data.p1score -= 1;
+			if(game.data.activated){
+				quit = true;
+			}
+			else{
+				ball_direction = 1;
+			}
 		}
 		if (ball_position > khroma.get_halfsize()) {
-			game.data.last_winner = PLAYER1;
 			game.data.old_p1score = game.data.p1score;
 			game.data.old_p2score = game.data.p2score;
-			game.data.p1score += 1;
-			//quit = true;
-			ball_direction = -1;
+			game.data.p2score -= 1;
+			if(game.data.activated){
+				quit = true;
+			}
+			else{
+				ball_direction = -1;
+			}
 		}
 
 		// Play pads

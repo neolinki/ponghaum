@@ -46,6 +46,7 @@ struct GameData {
 	int p3score; /// Score of player 3 (score of other LED strip player 1)
 	int p4score; /// Score of player 4 (score of other LED strip player 2)
 	int myID; //ID of the LED strip
+	bool activated; // To know if the game is on THIS Led strip
 	int old_p1score; /// Old score of player 1
 	int old_p2score; /// Old score of player 2
 	bool playing4_enabled; /// Two ponghaum/4players enabled

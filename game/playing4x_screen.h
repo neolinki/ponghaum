@@ -28,7 +28,8 @@ class Playing4xScreen : public GameScreen {
 		virtual char * analyse_data(unsigned char *datas);
 
 
-		virtual void generate_random_direction();
+		virtual void generate_random_direction(bool initial_random=false);
+		virtual void play_activation(bool activated, int direction = 1);
 
 	private:
 		BallSprite ball; // The ball
