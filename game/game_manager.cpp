@@ -53,12 +53,16 @@ void GameManager::communicate(char type, char msg[4]) {
 }
 
 void GameManager::restart_game() {
-	data.p1score = 0;
-	data.p2score = 0;
-	data.p3score = 0;
-	data.p4score = 0;
-	data.old_p1score = 0;
-	data.old_p2score = 0;
+	int initial_value = 0;
+	if(data.playing4_enabled){
+		int initial_value = 3;
+	}
+	data.p1score = initial_value;
+	data.p2score = initial_value;
+	data.p3score = initial_value;
+	data.p4score = initial_value;
+	data.old_p1score = initial_value;
+	data.old_p2score = initial_value;
 	play();
 }
 
