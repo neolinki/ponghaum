@@ -64,8 +64,10 @@ void GameManager::restart_game() {
 
 void GameManager::play() {
 	if (data.playing4_enabled) {
+		game.data.max_points = 6;
 		scr = &screens.playing4x;
 	} else {
+		game.data.max_points = 5;
 		scr = &screens.playing;
 	}
 	scr->init();

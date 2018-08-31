@@ -57,7 +57,7 @@ void ScoresScreen::animate() {
 	}
 
 	if (ack1 && ack2) { 
-		if ((game.mode == CONQUER && (game.data.p1score == MAX_POINTS || game.data.p2score == MAX_POINTS)) || (game.mode == NORMAL && (game.data.p1score + game.data.p2score == MAX_POINTS))) {
+		if ((game.mode == CONQUER && (game.data.p1score == game.data.max_points || game.data.p2score == game.data.max_points)) || (game.mode == NORMAL && (game.data.p1score + game.data.p2score == game.data.max_points))) {
 			fct = &GameManager::rainbow;
 		} else {
 			fct = &GameManager::play;

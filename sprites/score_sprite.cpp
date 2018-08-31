@@ -21,7 +21,7 @@ void ScoreSprite::animate() {
 	animloop.animate();
 	animfadeout.animate();
 
-	int score_unit_length = 2 * khroma.get_halfsize() / MAX_POINTS;
+	int score_unit_length = 2 * khroma.get_halfsize() / game.data.max_points;
 	int old_score, score_delta;
 	if (get_reversed()) {
 		old_score = game.data.old_p1score;

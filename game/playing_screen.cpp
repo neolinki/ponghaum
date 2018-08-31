@@ -57,8 +57,8 @@ void PlayingScreen::animate() {
 			game.data.old_p1score = game.data.p1score;
 			game.data.old_p2score = game.data.p2score;
 			game.data.p2score += 1;
-			if (game.mode == CONQUER && game.data.p2score + game.data.p1score >= MAX_POINTS)
-				game.data.p1score = MAX_POINTS - game.data.p2score;
+			if (game.mode == CONQUER && game.data.p2score + game.data.p1score >= game.data.max_points)
+				game.data.p1score = game.data.max_points - game.data.p2score;
 			quit = true;
 		}
 		if (ball_position > khroma.get_halfsize()) {
@@ -66,8 +66,8 @@ void PlayingScreen::animate() {
 			game.data.old_p1score = game.data.p1score;
 			game.data.old_p2score = game.data.p2score;
 			game.data.p1score += 1;
-			if (game.mode == CONQUER && game.data.p2score + game.data.p1score >= MAX_POINTS)
-				game.data.p2score = MAX_POINTS - game.data.p1score;
+			if (game.mode == CONQUER && game.data.p2score + game.data.p1score >= game.data.max_points)
+				game.data.p2score = game.data.max_points - game.data.p1score;
 			quit = true;
 		}
 

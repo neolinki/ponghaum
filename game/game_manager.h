@@ -1,8 +1,6 @@
 #ifndef GAME_MANAGER_H
 #define GAME_MANAGER_H
 
-#define MAX_POINTS 5
-
 #include "../khroma.h"
 
 /** Game phases enumeration **/
@@ -51,6 +49,7 @@ struct GameData {
 	int old_p2score; /// Old score of player 2
 	bool playing4_enabled; /// Two ponghaum/4players enabled
 	bool playing4_master; /// This pinghaum is master in the 4 players game
+	int max_points;
 };
 
 
