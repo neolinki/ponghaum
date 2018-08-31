@@ -105,6 +105,24 @@ void Playing4xScreen::init() {
 void Playing4xScreen::onReceived(GameCommMsg type, char msg[4]) {
 	if (type == GameCommMsg_INIT4) {
 		char *datas = analyse_data(msg);
+		if(datas[0] == 0){ //play inactive mode
+			play_activation(false);
+		}
+		else if(datas[0] == 1){ //play active mode
+			play_activation(true, datas[1]);
+		}
+		else if(datas[0] == 2){ //Show score
+			quit = true;
+		}
+		else if(datas[0] == 3){ //Update other LED strip scores
+			game.data.p3score = datas[2];
+			game.data.p4score = datas[3];
+			if(game.data.playing4_master){
+				char msg[4];
+				make_msg(2,0,game.data.p1score, game.data.p2score, 0, 1, msg);
+			}
+		}
+
 	}
 }
 
