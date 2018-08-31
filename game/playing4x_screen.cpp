@@ -57,7 +57,8 @@ void Playing4xScreen::generate_random_direction(bool initial_random) {
 	}
 	half_passed = true;
 	if(axis != game.data.myID){
-		//send to other to launch game
+		char msg[4];
+		make_msg(1,direction,game.data.p1score, game.data.p2score, game.data.myID, axis, msg);
 		play_activation(false);
 	}
 
@@ -211,7 +212,13 @@ void Playing4xScreen::animate() {
 			game.data.old_p2score = game.data.p2score;
 			game.data.p1score -= 1;
 			if(game.data.activated){
-				quit = true;
+				char msg[4];
+				make_msg(3,0,game.data.p1score, game.data.p2score, game.data.myID, game.data.myID == 0 ? 1 : 0, msg);
+				if(game.data.playing4_master){
+					char msg2[4];
+					make_msg(2,0,game.data.p1score, game.data.p2score, game.data.myID, game.data.myID == 0 ? 1 : 0, msg2);
+					quit = true;
+				}
 			}
 			else{
 				ball_direction = 1;
@@ -222,7 +229,13 @@ void Playing4xScreen::animate() {
 			game.data.old_p2score = game.data.p2score;
 			game.data.p2score -= 1;
 			if(game.data.activated){
-				quit = true;
+				char msg[4];
+				make_msg(3,0,game.data.p1score, game.data.p2score, game.data.myID, game.data.myID == 0 ? 1 : 0, msg);
+				if(game.data.playing4_master){
+					char msg2[4];
+					make_msg(2,0,game.data.p1score, game.data.p2score, game.data.myID, game.data.myID == 0 ? 1 : 0, msg2);
+					quit = true;
+				}
 			}
 			else{
 				ball_direction = -1;
