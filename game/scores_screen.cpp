@@ -57,10 +57,32 @@ void ScoresScreen::animate() {
 	}
 
 	if (ack1 && ack2) { 
-		if ((game.mode == CONQUER && (game.data.p1score == game.data.max_points || game.data.p2score == game.data.max_points)) || (game.mode == NORMAL && (game.data.p1score + game.data.p2score == game.data.max_points))) {
+		if ( !game.data.playing4_enabled) {
+			if ((game.mode == CONQUER && (game.data.p1score == game.data.max_points || game.data.p2score == game.data.max_points)) || (game.mode == NORMAL && (game.data.p1score + game.data.p2score == game.data.max_points))) {
 			fct = &GameManager::rainbow;
+			} else {
+				fct = &GameManager::play;
+			}
 		} else {
-			fct = &GameManager::play;
+			int nb_player_loose = 0;
+			if (game.data.p1score == 0) {
+				nb_player_loose++;
+			}
+			if (game.data.p2score == 0) {
+				nb_player_loose++;
+			}
+			if (game.data.p3score == 0) {
+				nb_player_loose++;
+			}
+			if (game.data.p4score == 0) {
+				nb_player_loose++;
+			}
+
+			if (nb_player_loose >= 3) {
+				fct = &GameManager::rainbow;
+			} else {
+				fct = &GameManager::play;
+			}
 		}
 	}
 
