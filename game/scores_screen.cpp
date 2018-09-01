@@ -9,10 +9,19 @@ void ScoresScreen::init() {
 
 	score1.init();
 	score1.reverse(true);
-	score1.set_score(game.data.p1score);
-
+	if(!game.data.playing4_enabled){
+		score1.set_score(game.data.p1score);
+	}
+	else{
+		score1.set_score(3 - game.data.p1score);
+	}
 	score2.init();
-	score2.set_score(game.data.p2score);
+	if(!game.data.playing4_enabled){
+		score2.set_score(game.data.p2score);
+	}
+	else{
+		score2.set_score(3 - game.data.p2score);
+	}
 
 	ack1 = false;
 	ack2 = false;
@@ -65,16 +74,16 @@ void ScoresScreen::animate() {
 			}
 		} else {
 			int nb_player_loose = 0;
-			if (game.data.p1score == 0) {
+			if ((3 - game.data.p1score) == 0) {
 				nb_player_loose++;
 			}
-			if (game.data.p2score == 0) {
+			if ((3-game.data.p2score) == 0) {
 				nb_player_loose++;
 			}
-			if (game.data.p3score == 0) {
+			if ((3-game.data.p3score) == 0) {
 				nb_player_loose++;
 			}
-			if (game.data.p4score == 0) {
+			if ((3-game.data.p4score) == 0) {
 				nb_player_loose++;
 			}
 

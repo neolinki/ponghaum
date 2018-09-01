@@ -52,11 +52,7 @@ void GameManager::communicate(char type, char msg[4]) {
 	);
 }
 
-void GameManager::restart_game() {
-	int initial_value = 0;
-	if(data.playing4_enabled){
-		initial_value = 3;
-	}
+void GameManager::restart_game() {	
 	data.p1score = 0;
 	data.p2score = 0;
 	data.p3score = 0;

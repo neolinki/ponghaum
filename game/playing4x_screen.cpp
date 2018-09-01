@@ -17,24 +17,24 @@ void Playing4xScreen::generate_random_direction(bool initial_random) {
 		int reset_random = 0;
 		if(axis == game.data.myID){
 			if (direction == 1){
-				if(game.data.p1score == 0){
+				if(3-game.data.p1score == 0){
 					reset_random = 1;
 				}	
 			}
 			else{
-				if(game.data.p2score == 0){
+				if(3-game.data.p2score == 0){
 					reset_random = 1;
 				}
 			}
 		}
 		else{
 			if(direction == 1){
-				if(game.data.p3score == 0){
+				if(3-game.data.p3score == 0){
 					reset_random = 1;
 				}
 			}
 			else{
-				if(game.data.p4score == 0){
+				if(3-game.data.p4score == 0){
 					reset_random = 1;
 				}
 			}
@@ -208,9 +208,9 @@ void Playing4xScreen::animate() {
 	if (!quit) {
 		// Check for win
 		if (ball_position < -khroma.get_halfsize()) {
-			game.data.old_p1score = game.data.p1score;
-			game.data.old_p2score = game.data.p2score;
-			game.data.p1score -= 1;
+			game.data.old_p1score = 3-game.data.p1score;
+			game.data.old_p2score = 3-game.data.p2score;
+			game.data.p1score += 1;
 			if(game.data.activated){
 				char msg[4];
 				make_msg(3,0,game.data.p1score, game.data.p2score, game.data.myID, game.data.myID == 0 ? 1 : 0, msg);
@@ -225,9 +225,9 @@ void Playing4xScreen::animate() {
 			}
 		}
 		if (ball_position > khroma.get_halfsize()) {
-			game.data.old_p1score = game.data.p1score;
-			game.data.old_p2score = game.data.p2score;
-			game.data.p2score -= 1;
+			game.data.old_p1score = 3-game.data.p1score;
+			game.data.old_p2score = 3-game.data.p2score;
+			game.data.p2score += 1;
 			if(game.data.activated){
 				char msg[4];
 				make_msg(3,0,game.data.p1score, game.data.p2score, game.data.myID, game.data.myID == 0 ? 1 : 0, msg);
