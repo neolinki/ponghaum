@@ -5,10 +5,11 @@
 
 void Playing4xScreen::generate_random_direction(bool initial_random) {
 	old_direction = ball_direction; 
-	int direction = ball_direction;
+	int direction = -ball_direction;
 	int old_axis = game.data.myID;
 	int axis = game.data.myID;
 	while (old_direction != direction && old_axis == axis) {
+		khroma.log("trying to random direction\n");
 		direction = rand() % 2;
 		axis = rand() % 2;
 		if (direction == 0) {
@@ -40,7 +41,7 @@ void Playing4xScreen::generate_random_direction(bool initial_random) {
 			}
 		}
 		if(reset_random == 1){
-			direction = old_direction;
+			direction = -old_direction;
 			axis = old_axis;
 		}
 	}
@@ -57,6 +58,7 @@ void Playing4xScreen::generate_random_direction(bool initial_random) {
 	}
 	half_passed = true;
 	if(axis != game.data.myID){
+		khroma.log("Changing ball axis\n");
 		char msg[4];
 		make_msg(1,direction,game.data.p1score, game.data.p2score, game.data.myID, axis, msg);
 		play_activation(false);
@@ -80,14 +82,15 @@ void Playing4xScreen::play_activation(bool activated, int direction){
 }
 
 void Playing4xScreen::init() {
+	debug_animatecount = 0;
 	ball.init();
 	ball.set_queue(true);
 	ball.set_color(0xff, 0xff, 0xff);
 	pad1.init();
 	pad1.reverse(true);
 	pad2.init();
-
-	ball_local_speed = 0;	
+	half_passed = false;
+	ball_local_speed = 0;
 	generate_random_direction(true);
 	inhibed_controls = true;
 
@@ -96,8 +99,11 @@ void Playing4xScreen::init() {
 	ball_speed.start();
 
 	quit = 0;
-	if(!game.data.activated){
+	if(!game.data.playing4_master){
 		play_activation(false);
+	}
+	else{
+		play_activation(true);
 	}
 
 	khroma.log("C'est (re)parti !\n");
@@ -282,4 +288,14 @@ void Playing4xScreen::animate() {
 	// Update all
 	pad1.animate();
 	pad2.animate();
+	debug_animatecount ++;
+	if(debug_animatecount <= 30){
+		khroma.leds.set_rgb(0,155,155,0);
+	}
+	else{
+		khroma.leds.set_rgb(0,0,0,0);
+		if(debug_animatecount > 60){
+			debug_animatecount = 0;
+		}
+	}	
 }

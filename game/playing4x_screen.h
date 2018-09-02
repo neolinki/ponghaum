@@ -46,6 +46,7 @@ class Playing4xScreen : public GameScreen {
 		int old_direction;
 		int random_direction;
 		char returned_data[7];
+		int debug_animatecount;
 };
 
 #endif
