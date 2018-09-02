@@ -24,12 +24,14 @@ void WaitPlayersScreen::onReceived(GameCommMsg type, char msg[4]) {
 			// There is another ponghaum, let's play 4 players
 			game.data.playing4_enabled = true;
 			game.data.playing4_master = false;
+			game.data.myID = 1;
 			char msg_out[4] = {1, 0, 0, 0};
 			khroma.send_data(GameCommMsg_INIT4, msg_out);
 		} else if (msg[0] == 1 && msg[1] == 0 && msg[2] == 0 && msg[3] == 0) {
 			// Slave answered, let's play 4 players
 			game.data.playing4_enabled = true;
 			game.data.playing4_master = true;
+			game.data.myID = 0;
 			char msg_out[4] = {0, 0, 0, 1};
 			khroma.send_data(GameCommMsg_INIT4, msg_out);
 		} else if (msg[0] == 0 && msg[1] == 0 && msg[2] == 0 && msg[3] == 1) {
